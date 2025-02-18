@@ -12,10 +12,10 @@ RDR2 Interactive Map is a web-based application designed for players of Red Dead
 
 - 🌿 Plant Locations: Locate herbs, flowers, and other flora for crafting and survival.
 
+- 💡 Tips on the best way to take down animals and get three-star pelts
+
 - 🔍 Search & Filters: Easily search for specific species or filter by region and type.
 
-- 📍 Custom Markers: Users can add personal markers to track findings.
-
-- 🗺️ Multiple Map Layers: Switch between different map views (e.g., terrain, satellite, habitat zones).
+- 🗺️ Multiple Map Layers: Switch between different map views (default, zones, temperature).
 
 - 📱 Mobile-Friendly: Optimized for use on both desktop and mobile devices.
