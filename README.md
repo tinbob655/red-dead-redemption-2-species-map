@@ -14,7 +14,7 @@ RDR2 Interactive Map is a web-based application designed for players of Red Dead
 
 - 🔍 Search & Filters: Easily search for specific species or filter by region and type.
 
--📍 Custom Markers: Users can add personal markers to track findings.
+- 📍 Custom Markers: Users can add personal markers to track findings.
 
 - 🗺️ Multiple Map Layers: Switch between different map views (e.g., terrain, satellite, habitat zones).
 
