@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Checkbox from './checkbox.jsx';
 
-export default function MapFilterSelector({data}) {
+export default function MapFilterSelector({data, appendToParentState}) {
 
     const [filters, setFilters] = useState(null);
     const [checkboxHTML, setCheckboxHTML] = useState(<></>);
@@ -36,7 +36,7 @@ export default function MapFilterSelector({data}) {
                     return (
                         <React.Fragment>
                             <div id={filterName + 'checkboxWrapper'} className="filterCheckboxWrapper">
-                                <Checkbox />
+                                <Checkbox filterName={filterName} addToParentStateArray={(value) => {appendToParentState(value)}} />
                                 <span>
                                     {filterName}
                                 </span>

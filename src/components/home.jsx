@@ -7,6 +7,8 @@ export default function Home() {
 
     const [animalData, setAnimalData] = useState(null);
     const [plantData, setPlantData] = useState(null);
+    const [animalsMapShownItems, setAnimalsMapShownItems] = useState([]);
+    const [plantsMapShownItems, setPlantsMapShownItems] = useState([]);
 
     useEffect(() => {
 
@@ -90,11 +92,12 @@ export default function Home() {
                             </h2>
                         </td>
                         <td style={{width: '75%'}}>
-                            <MapFilterSelector data={animalData} />
+                            <MapFilterSelector data={animalData} appendToParentState={(value) => {updateArray('animals', value)}} />
                         </td>
                     </tr>
                 </thead>
             </table>
+            <Map shownItems={animalsMapShownItems} />
 
             <div className="dividerLine"></div>
 
@@ -110,11 +113,38 @@ export default function Home() {
                             </h2>
                         </td>
                         <td style={{width: '75%'}}>
-                            <MapFilterSelector data={plantData} />
+                            <MapFilterSelector data={plantData} appendToParentState={(value) => {updateArray('plants', value)}} />
                         </td>
                     </tr>
                 </thead>
             </table>
+            <Map shownItems={plantsMapShownItems} />
         </React.Fragment>
     );
+
+    function updateArray(type, value) {
+        if (type === 'animals') {
+            let defaultArray = animalsMapShownItems;
+
+            //toggle the existence of value in the array
+            const index = defaultArray.indexOf(value);
+            if (index > -1) defaultArray.splice(index, 1);
+            else defaultArray.push(value);
+
+            setAnimalsMapShownItems([...defaultArray, value]);
+        }
+
+        else if (type === 'plants') {
+            let defaultArray = plantsMapShownItems;
+
+            //toggle the existence of value in the array
+            const index = defaultArray.indexOf(value);
+            if (index > -1) defaultArray.splice(index, 1);
+            else defaultArray.push(value);
+
+            setPlantsMapShownItems([...defaultArray, value]);
+        }
+
+        else throw new Error('Array type must be either animals or plants');
+    };
 };
