@@ -90,7 +90,7 @@ export default function Home() {
                             </h2>
                         </td>
                         <td style={{width: '75%'}}>
-                            <MapFilterSelector animalData={animalData} />
+                            <MapFilterSelector data={animalData} />
                         </td>
                     </tr>
                 </thead>
@@ -110,7 +110,7 @@ export default function Home() {
                             </h2>
                         </td>
                         <td style={{width: '75%'}}>
-                            <MapFilterSelector plantData={plantData} />
+                            <MapFilterSelector data={plantData} />
                         </td>
                     </tr>
                 </thead>

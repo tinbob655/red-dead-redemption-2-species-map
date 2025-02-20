@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Checkbox from './checkbox.jsx';
 
-export default function MapFilterSelector(data) {
+export default function MapFilterSelector({data}) {
 
     const [filters, setFilters] = useState(null);
     const [checkboxHTML, setCheckboxHTML] = useState(<></>);
@@ -9,31 +9,21 @@ export default function MapFilterSelector(data) {
     useEffect(() => {
 
         //only run if data exists
-        if (data.animalData || data.plantData) {
+        if (data) {
 
             //get a list of all the filters available
             let tempFilters = [];
     
-            //if we are dealing with animal data
-            if (data.animalData) {
-                data.animalData.forEach((species) => {
-                    tempFilters.push(species.animalName);
-                });
-            }
-    
-            //if we are dealing with plant data
-            else if (data.plantData) {
-                data.plantData.forEach((species) => {
-                    tempFilters.push(species.plantName);
-                });
-            };
+            data.forEach((species) => {
+                tempFilters.push(species.animalName || species.plantName);
+            });
 
             setFilters(tempFilters);
         };
         
     }, [data]);
 
-    //when the filters are updates, we need to re-render the selector
+    //when the filters are updated, we need to re-render the selector
     useEffect(() => {
 
         //only run if filters has been set
