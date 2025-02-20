@@ -4,7 +4,6 @@ import Checkbox from './checkbox.jsx';
 export default function MapFilterSelector(data) {
 
     const [filters, setFilters] = useState(null);
-    const [animalOrPlant, setAnimalOrPlant] = useState(null);
     const [checkboxHTML, setCheckboxHTML] = useState(<></>);
 
     useEffect(() => {
@@ -17,7 +16,6 @@ export default function MapFilterSelector(data) {
     
             //if we are dealing with animal data
             if (data.animalData) {
-                setAnimalOrPlant('animal');
                 data.animalData.forEach((species) => {
                     tempFilters.push(species.animalName);
                 });
@@ -25,7 +23,6 @@ export default function MapFilterSelector(data) {
     
             //if we are dealing with plant data
             else if (data.plantData) {
-                setAnimalOrPlant('plant');
                 data.plantData.forEach((species) => {
                     tempFilters.push(species.plantName);
                 });
