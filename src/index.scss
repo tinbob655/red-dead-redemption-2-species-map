@@ -1,3 +1,117 @@
+//import fonts
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
 body {
-    background-color: red;
+    background-color: #121117;
+    padding: 0;
+    margin: 0;
+    border: none;
+    overflow-x: hidden;
+}
+
+h1 {
+    font-family: Montserrat;
+    color: white;
+    font-size: 40px;
+}
+
+h2 {
+    font-family: Montserrat;
+    color: #afc5c3;
+    font-size: 35px;
+}
+
+h3 {
+    font-family: Raleway;
+    color: rgb(121, 203, 218);
+    font-size: 20px;
+
+    transition-property: transform;
+    transition-duration: 0.75s;
+    transition-timing-function: ease;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+p {
+    font-family: Raleway;
+    color: white;
+    font-size: 17px;
+}
+
+h1, h2, h3, p {
+    text-align: center;
+
+    &.alignLeft {
+        text-align: left;
+        margin-left: 6%;
+        max-width: 75%;
+    }
+
+    &.alignRight {
+        text-align: right;
+        margin-right: 6%;
+        max-width: 75%;
+    }
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+div {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    border: none;
+
+    &.dividerLine {
+        background-color: rgb(121, 203, 218);
+        height: 5px;
+        width: 75%
+    }
+
+    &#mapFilterSelectorWrapper {
+        width: 75%;
+        border: 5px solid #072931;
+        border-radius: 10px;
+    }
+
+    $checkboxWidthAndHeight: 20px;
+    &.checkbox {
+        width: $checkboxWidthAndHeight;
+        height: $checkboxWidthAndHeight;
+        border: 2px solid grey;
+        float: left;
+        margin-right: calc($checkboxWidthAndHeight /1.5);
+    }
+
+    &.checkboxInner {
+        $innerCheckboxSizeMultiplier: 0.8; //the width of the coloured part of the checkbox is 80% of the whole checkbox
+        width: calc($checkboxWidthAndHeight * $innerCheckboxSizeMultiplier);
+        height: calc($checkboxWidthAndHeight * $innerCheckboxSizeMultiplier);
+        margin-left: calc($checkboxWidthAndHeight * ((1 - $innerCheckboxSizeMultiplier) / 2));
+        margin-top: calc($checkboxWidthAndHeight * ((1 - $innerCheckboxSizeMultiplier) / 2));
+        transition-property: background-color;
+        transition-duration: 0.25s;
+        transition-timing-function: ease-out;
+    }
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+span {
+
+    //span should have the same defaults as p
+    font-family: Raleway;
+    color: white;
+    font-size: 17px;
+    text-align: center;
 }
