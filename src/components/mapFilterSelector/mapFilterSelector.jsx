@@ -37,7 +37,7 @@ export default function MapFilterSelector({data, appendToParentState}) {
                         <React.Fragment>
                             <div id={filterName + 'checkboxWrapper'} className="filterCheckboxWrapper">
                                 <Checkbox filterName={filterName} addToParentStateArray={(value) => {appendToParentState(value)}} />
-                                <span>
+                                <span style={{fontSize: '15px'}}>
                                     {filterName}
                                 </span>
                             </div>
