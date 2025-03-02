@@ -14,5 +14,8 @@ div {
 }
 
 img.map {
-    width: 150%;
+
+    transition-property: transform;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
 }
