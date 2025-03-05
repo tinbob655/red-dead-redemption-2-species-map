@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
-import mapImage from '../../assets/images/rdr2Map.jpeg';
+import mapImage from '../../assets/images/rdr2Map.jpg';
 import './mapStyles.scss';
 
 export default function Map({shownItems}) {
 
     const randomIdHash = String(Math.random());
 
-    let globalScale = 0.3;
+    let globalScale = 0.25;
 
     //initialise x and y related variables
     let [deltaX, deltaY] = [0, 0];
-    const initialTranslation = [-3787, -2278];
+    const initialTranslation = [-4720, -4022];
     let [oldX, oldY] = [0, 0];
 
     useEffect(() => {
@@ -64,7 +64,7 @@ export default function Map({shownItems}) {
         const imageScale = event.target.style.transform.replace('scale(', '').replace(')', '');
 
         //calculate scale factor
-        const newScale = Number(imageScale) - (event.deltaY / 1000);
+        const newScale = Number(imageScale) - (event.deltaY / 2000);
 
         //make sure newScale stays within bounds
         const bounds = [0.15, 4.5];
