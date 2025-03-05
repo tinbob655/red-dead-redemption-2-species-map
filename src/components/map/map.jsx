@@ -67,7 +67,7 @@ export default function Map({shownItems}) {
         const newScale = Number(imageScale) - (event.deltaY / 1000);
 
         //make sure newScale stays within bounds
-        const bounds = [0.3, 3];
+        const bounds = [0.15, 4.5];
         if (newScale > bounds[1] || newScale < bounds[0]) {
             return;
         };
