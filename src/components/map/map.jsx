@@ -64,7 +64,7 @@ export default function Map({shownItems}) {
         const imageScale = event.target.style.transform.replace('scale(', '').replace(')', '');
 
         //calculate scale factor
-        const newScale = Number(imageScale) + (event.deltaY / 1000);
+        const newScale = Number(imageScale) - (event.deltaY / 1000);
 
         //make sure newScale stays within bounds
         const bounds = [0.3, 3];
