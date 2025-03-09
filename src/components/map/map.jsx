@@ -1,16 +1,17 @@
 import React, {useEffect} from 'react';
 import mapImage from '../../assets/images/rdr2Map.jpg';
+import resetIcon from '../../assets/images/resetIcon.svg';
 import './mapStyles.scss';
 
 export default function Map({shownItems}) {
 
     const randomIdHash = String(Math.random());
 
-    let globalScale = 0.25;
+    const initialScale = 0.25;
 
     //initialise x and y related variables
     let [deltaX, deltaY] = [0, 0];
-    const initialTranslation = [-4720, -4022];
+    const initialTranslation = [-4720, -4022]; //translation to make valentine the center of the map (most players will know where this is)
     let [oldX, oldY] = [0, 0];
 
     useEffect(() => {
@@ -22,7 +23,14 @@ export default function Map({shownItems}) {
     return (
         <React.Fragment>
             <div className="mapWrapper">
-                <img className="map" id={randomIdHash} src={mapImage} onDragStart={(event) => {dragStarted(event)}} onDrag={(event) => {imageDragged(event)}} style={{translate: `${initialTranslation[0]}px ${initialTranslation[1]}px`, transform: `scale(${globalScale})`}} />
+
+                {/*map reset button*/}
+                <button className="mapResetButton" onClick={() => {resetMap()}}>
+                    <img src={resetIcon} alt="Reset" className="mapIcon" />
+                </button>
+
+                {/*map image*/}
+                <img className="map" id={randomIdHash} src={mapImage} onDragStart={(event) => {dragStarted(event)}} onDrag={(event) => {imageDragged(event)}} style={{translate: `${initialTranslation[0]}px ${initialTranslation[1]}px`, transform: `scale(${initialScale})`}} loading="lazy" />
             </div>
         </React.Fragment>
     );
@@ -73,7 +81,12 @@ export default function Map({shownItems}) {
         };
 
         //scale the image
-        globalScale = newScale;
         event.target.style.transform = `scale(${newScale})`;
+    };
+
+    function resetMap() {
+        const image = document.getElementById(randomIdHash);
+        image.style.transform = `scale(${initialScale})`;
+        image.style.translate = `${initialTranslation[0]}px ${initialTranslation[1]}px`;
     };
 };
