@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Papa from 'papaparse';
 import MapFilterSelector from './mapFilterSelector/mapFilterSelector.jsx';
 import Map from './map/map.jsx';
+import fetchCSV from '../csvHandler.js';
 
 export default function Home() {
 
@@ -13,20 +14,11 @@ export default function Home() {
     useEffect(() => {
 
         //function to fetch the csv from file
-        async function fetchCSV(path) {
-            const data = await fetch(path);
-            const reader = data.body.getReader();
-            const decoder = new TextDecoder('utf-8');
 
-            return reader.read().then(function(result) {
-                return decoder.decode(result.value);
-            });
-        };
-
-        function handleCSV(csv) {
+        function handleCSV(parsed) {
 
             //parse the csv
-            const parsedData = Papa.parse(csv).data;
+            const parsedData = parsed.data;
 
             //get column names
             const columnHeadings = parsedData.shift();
