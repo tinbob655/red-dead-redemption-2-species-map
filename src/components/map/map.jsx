@@ -1,24 +1,81 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import mapImage from '../../assets/images/rdr2Map.jpg';
 import resetIcon from '../../assets/images/resetIcon.svg';
+import MapPing from './mapPing.jsx';
+import fetchCSV from '../../csvHandler.js';
 import './mapStyles.scss';
 
 export default function Map({shownItems}) {
 
+    //the map needs a random ID to be distinguished from the other map
     const randomIdHash = String(Math.random());
 
+    //initialise variables to do with map movements
     const initialScale = 0.25;
     const initialTranslation = [-4720, -4022]; //translation to make valentine the center of the map (most players will know where this is)
     const initialMatrix = [initialScale, 0, 0, initialScale, initialTranslation[0], initialTranslation[1]];
-
     let [deltaX, deltaY] = [0, 0];
     let [oldX, oldY] = [0, 0];
+
+    //variable to store the HTML of the map markers
+    const [shownItemsHTML, setShownItemsHTML] = useState(<></>);
 
     useEffect(() => {
 
         //set the event listener for the image being scrolled over
         document.getElementById(randomIdHash).addEventListener('wheel', (event) => {imageScrolled(event), {passive: false}});
     }, []);
+
+    //will fire when shownItems changes
+    useEffect(() => {
+
+        //entire useEffect is encased in a function for easier data returning
+        function updateMapPings() {
+
+            //render new HTML for the map markers based on the new shown items
+            //remove the last value from shownItems as this is always duplicated due to react weirdness
+            let adjustedShownItems = shownItems;
+            adjustedShownItems.pop();
+    
+            let tempItemsHTML = [];
+    
+            //do not show anything if no items are to be shown
+            if (adjustedShownItems.length <= 0) {
+                return <></>;
+            };
+    
+            //deduce if the items are being added to the animal map or the plant map
+            let animalBool = false;
+            fetchCSV('src/assets/testData/testAnimalData.csv').then((res) => {
+                const data = res.data;
+                data.shift();
+
+                //if any item in the animal array is in the adjustedShownItems array, then set animalBool to true
+                //start by converting the 2d data array into a 1d array with just the animal names
+                const animalNames = data.map((animal) => animal[1]);
+                adjustedShownItems.forEach((item) => {
+
+                    //after repeating for each item, if that item is also in the animalNames array, then set animalBool to true
+                    if (animalNames.includes(item)) {
+                        animalBool = true;
+                    };
+                });
+            });
+    
+            //if there are items to show, show them
+            adjustedShownItems.forEach((item) => {
+                tempItemsHTML.push(
+                    <MapPing itemName={item} animalBool={animalBool} parentMapId={randomIdHash} />
+                );
+            });
+
+            return tempItemsHTML;
+        };
+
+        //set the shown map items as the result of the updateMapPings function
+        setShownItemsHTML(updateMapPings());
+
+    }, [shownItems]);
 
     return (
         <React.Fragment>
@@ -28,6 +85,9 @@ export default function Map({shownItems}) {
                 <button className="mapResetButton" onClick={() => {resetMap()}}>
                     <img src={resetIcon} alt="Reset" className="mapIcon" />
                 </button>
+
+                {/*map markers for shown items*/}
+                {shownItemsHTML}
 
                 {/*map image*/}
                 <img className="map" id={randomIdHash} src={mapImage} onDragStart={(event) => {dragStarted(event)}} onDrag={(event) => {imageDragged(event)}} style={{transform: `matrix(${initialMatrix})`}} loading="lazy" />

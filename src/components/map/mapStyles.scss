@@ -10,12 +10,17 @@ div {
         border-radius: 20px;
         border: 5px solid #404040;
         background-color: #dec59d;
-        cursor:grab;
+    }
+
+    &.mapPing {
+        z-index: 5;
+        position: absolute;
     }
 }
 
 img.map {
     z-index: -1;
+    cursor: grab;
 }
 
 button.mapResetButton {
