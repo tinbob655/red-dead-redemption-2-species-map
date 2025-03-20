@@ -5,17 +5,18 @@ import MapPing from './mapPing.jsx';
 import fetchCSV from '../../csvHandler.js';
 import './mapStyles.scss';
 
+//initialise variables to do with map movements
+const initialScale = 0.25;
+const initialTranslation = [-1342, -4025]; //translation to make valentine the center of the map (most players will know where this is)
+const initialMatrix = [initialScale, 0, 0, initialScale, initialTranslation[0], initialTranslation[1]];
+let [deltaX, deltaY] = [0, 0];
+let oldX = 0;
+let oldY = 0;
+
+//the map needs a random ID to be distinguished from the other map
+const randomIdHash = String(Math.random());
+
 export default function Map({shownItems}) {
-
-    //the map needs a random ID to be distinguished from the other map
-    const randomIdHash = String(Math.random());
-
-    //initialise variables to do with map movements
-    const initialScale = 0.25;
-    const initialTranslation = [-4720, -4022]; //translation to make valentine the center of the map (most players will know where this is)
-    const initialMatrix = [initialScale, 0, 0, initialScale, initialTranslation[0], initialTranslation[1]];
-    let [deltaX, deltaY] = [0, 0];
-    let [oldX, oldY] = [0, 0];
 
     //variable to store the HTML of the map markers
     const [shownItemsHTML, setShownItemsHTML] = useState(<></>);
@@ -65,7 +66,7 @@ export default function Map({shownItems}) {
             //if there are items to show, show them
             adjustedShownItems.forEach((item) => {
                 tempItemsHTML.push(
-                    <MapPing itemName={item} animalBool={animalBool} parentMapId={randomIdHash} />
+                    <MapPing itemName={item} animalBool={animalBool} />
                 );
             });
 
@@ -86,11 +87,16 @@ export default function Map({shownItems}) {
                     <img src={resetIcon} alt="Reset" className="mapIcon" />
                 </button>
 
-                {/*map markers for shown items*/}
-                {shownItemsHTML}
+                {/*draggable section of the map*/}
+                <div className="innerMap" id={randomIdHash} onDragStart={(event) => {dragStarted(event)}} onDrag={(event) => {imageDragged(event)}} style={{transform: `matrix(${initialMatrix})`}}>
 
-                {/*map image*/}
-                <img className="map" id={randomIdHash} src={mapImage} onDragStart={(event) => {dragStarted(event)}} onDrag={(event) => {imageDragged(event)}} style={{transform: `matrix(${initialMatrix})`}} loading="lazy" />
+
+                    {/*map markers for shown items*/}
+                    {shownItemsHTML}
+
+                    {/*map image*/}
+                    <img className="map" src={mapImage} />
+                </div>
             </div>
         </React.Fragment>
     );
@@ -104,6 +110,7 @@ export default function Map({shownItems}) {
 
     function imageDragged(event) {
 
+
         //calculate the change in position
         const [mouseX, mouseY] = [event.clientX, event.clientY];
         deltaX = (mouseX - oldX);
@@ -111,24 +118,31 @@ export default function Map({shownItems}) {
         [oldX, oldY] = [mouseX, mouseY];
 
         //if the drag is stopped, stop the map from teleporting
-        if (oldX == 0 || oldY == 0) {
+        if (oldX === 0 || oldY === 0) {
             return;
         };
 
+        const image = document.getElementById(randomIdHash);
+
+
         //calculate the amount to move the image by
-        const currentTranslation = event.target.style.transform.replace('matrix(', '').replace(')', '').split(', ');
+        const currentTranslation = image.style.transform.replace('matrix(', '').replace(')', '').split(', ');
         let [currentX, currentY] = [Number(currentTranslation[4]), Number(currentTranslation[5])];
         let [newX, newY] = [(currentX+deltaX), (currentY+deltaY)];
 
         //update the position of the image
-        const image = event.target;
-        image.style.transform = `matrix(${currentTranslation[0]}, ${currentTranslation[1]}, ${currentTranslation[2]}, ${currentTranslation[3]}, ${newX}, ${newY})`;
+        image.style.transform = `matrix(${currentTranslation[0]}, 0, 0, ${currentTranslation[3]}, ${newX}, ${newY})`;
     };
 
     function imageScrolled(event) {
         event.preventDefault();
 
-        const currentMatrix = event.target.style.transform.replace('matrix(', '').replace(')', '').split(', ');
+        const imageStyle = document.getElementById(randomIdHash)?.style;
+        if (!imageStyle) {
+            return;
+        };
+
+        const currentMatrix = imageStyle.transform.replace('matrix(', '').replace(')', '').split(', ');
 
         //calculate scale factor
         const newScale = Number(currentMatrix[0]) - (event.deltaY / 2000);
@@ -139,8 +153,15 @@ export default function Map({shownItems}) {
             return;
         };
 
-        //scale the image
-        event.target.style.transform = `matrix(${newScale}, 0, 0, ${newScale}, ${currentMatrix[4]}, ${currentMatrix[5]})`;
+        //calculate new translation.
+        //x formula is: oldTranslation * (newScale / oldScale)
+        const oldScale = Number(currentMatrix[0]);
+        const oldTranslations = [Number(currentMatrix[4]), Number(currentMatrix[5])];
+        const translationX = oldTranslations[0] * (newScale / oldScale);
+        //y formula is UNKNOWN
+        const translationY = oldTranslations[1] * 0.98; //no clue where this 0.98 comes from, works for first few enlargements if valentine is center
+
+        imageStyle.transform = `matrix(${newScale}, 0, 0, ${newScale}, ${translationX}, ${translationY})`;
     };
 
     function resetMap() {
