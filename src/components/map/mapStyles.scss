@@ -12,15 +12,10 @@ div {
         background-color: #dec59d;
     }
 
-    &.mapPing {
-        z-index: 5;
-        position: absolute;
+    &.innerMap {
+        cursor: grab;
+        z-index: -1;
     }
-}
-
-img.map {
-    z-index: -1;
-    cursor: grab;
 }
 
 button.mapResetButton {

@@ -1,22 +1,16 @@
 import React from 'react';
 
-export default function MapPing({itemName, animalBool, parentMapId}) {
+export default function MapPing({itemName, animalBool}) {
+
+    //MARGINS IS NOT UPDATING WHEN THE STATE OF THE PARENT UPDATES
 
     const randomId = 'mapPing#' + String(Math.random());
 
-    document.getElementById(parentMapId).addEventListener('drag', (event) => {
-
-        //when the parent map is dragged, this will fire. Move the ping along with the map
-    });
-
     return (
-        <div className="mapPing" id={randomId} style={{marginLeft: 0, marginRight: 0}}>
-            <p>
-                {`Item name: ${itemName}`}
-                <br/>
-                {`Animal?: ${String(animalBool)}`}
-            </p>
+        <div className="mapPing">
+            <h1>
+                {itemName}
+            </h1>
         </div>
     );
-
 };
