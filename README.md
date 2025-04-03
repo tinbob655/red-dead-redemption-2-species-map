@@ -1,5 +1,7 @@
 # RDR2 Interactive Map
 
+## This project has had development temporarily shelved to let me focus on other projects
+
 ## Overview
 
 RDR2 Interactive Map is a web-based application designed for players of Red Dead Redemption 2 to locate **all** plant and animal species in the game. Inspired by mapping tools like Google Maps, this interactive platform helps users explore and track in-game wildlife and flora efficiently.
